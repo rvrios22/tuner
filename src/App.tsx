@@ -4,25 +4,25 @@ import Tuner from "./components/Tuner";
 function App() {
   const { audioStream, permission, errMessage } = useAudio();
   if (permission === null) {
-    return <p>Requesting microphone permission...</p>;
+    return <p style={{ textAlign: "center" }}>Requesting microphone permission...</p>;
   }
-  
+
   if (permission === false) {
     return (
-      <>
-        <h1>Permission Denied</h1>
+      <div style={{ textAlign: "center" }}>
+        <h1>Error</h1>
         <p>{errMessage}</p>
-      </>
+      </div>
     );
   }
-  
+
   if (!audioStream) {
-    return <p>Loading audio stream...</p>;
+    return <p style={{ textAlign: "center" }}>Loading audio stream...</p>;
   }
-  
+
   return (
     <>
-      <h1>Tuner</h1>
+      <h1 style={{ textAlign: "center", fontSize: "2.75em" }}>Tuner</h1>
       <Tuner audioStream={audioStream} />
     </>
   );

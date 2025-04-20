@@ -11,7 +11,7 @@ const useFrequency = (
         if (!analyser || !audioContext) return;
 
         const detector = PitchDetector.forFloat32Array(analyser.fftSize);
-        detector.minVolumeDecibels = -10
+        detector.minVolumeDecibels = -15
         const input = new Float32Array(detector.inputLength);
 
         let isMounted = true;
