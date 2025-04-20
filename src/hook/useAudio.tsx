@@ -6,9 +6,10 @@ const useAudio = () => {
   const [permission, setPermission] = useState<boolean | null>(null);
   const [errMessage, setErrMessage] = useState<null | string>(null);
   useEffect(() => {
+    let stream: MediaStream;
     const requestMic = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
+        stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
         });
         setPermission(true);
@@ -19,6 +20,10 @@ const useAudio = () => {
       }
     };
     requestMic();
+
+    return () => {
+      stream?.getTracks().forEach((track) => track.stop());
+    };
   }, []);
   return { audioStream: audioStream.current, permission, errMessage };
 };
