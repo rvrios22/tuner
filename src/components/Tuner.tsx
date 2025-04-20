@@ -10,7 +10,6 @@ interface TunerProps {
 function Tuner({ audioStream }: TunerProps) {
   const { analyser, audioContext } = useAnalyser(audioStream);
   const [centsOffset, setCentsOffset] = useState<number | null>(null);
-  const [containerWidth, setContainerWidth] = useState<number>(0);
   const freq = useFrequency(analyser, audioContext);
   const container = useRef<HTMLDivElement | null>(null);
 
@@ -18,16 +17,6 @@ function Tuner({ audioStream }: TunerProps) {
     if (!freq) return;
     const offset = freequencyOffset(freq);
     setCentsOffset(offset);
-  }, [freq]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (!container.current) return;
-      setContainerWidth(container.current?.offsetWidth);
-    };
-    handleResize()
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, [freq]);
 
   if (!analyser || !audioContext) {
@@ -38,8 +27,8 @@ function Tuner({ audioStream }: TunerProps) {
     if (centsOffset === null) {
       return "50%"; // Default to center if offset is null or container width is not available
     }
-    const offsetPercentage = (centsOffset / 50) * 50; // Convert cents offset to percentage (-50 to 50 => -50% to 50%)
-    const ballPosition = 50 + offsetPercentage; // Shift the percentage so 0 offset is 50%
+    const offsetPercentage = (centsOffset / 50) * 50;
+    const ballPosition = 50 + offsetPercentage;
 
     return `${ballPosition}%`;
   };
